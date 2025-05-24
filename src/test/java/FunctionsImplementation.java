@@ -19,7 +19,7 @@ public class FunctionsImplementation extends InternalFunctionsLogic{
     Random rand = new Random();
     int randomNum = rand.nextInt(200) + 10;
     int randomphone = rand.nextInt(89) + 10;
-    String email = "umarhassanzia88+test5@gmail.com";
+    String email = "umarhassanzia88+test" + randomNum + "@gmail.com";
     String phoneNum = "5065676" + randomphone;
 
     public void signUp() throws InterruptedException {
@@ -47,11 +47,15 @@ public class FunctionsImplementation extends InternalFunctionsLogic{
     }
 
     public void login() throws InterruptedException {
-        System.out.println("Login Page Invoked!");
         invalidloginUser("abc", "123");
         incorrectloginUser(email,"Aqary");
         incorrectloginUser("abc@gmail.com", "Aqary@88");
         validloginUser(email, "Aqary@88");
+
+    }
+
+    public void passwordRecovery() throws InterruptedException {
+        forgotPass();
 
     }
 }

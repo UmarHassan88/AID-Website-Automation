@@ -11,14 +11,15 @@ public class TestScriptsExecution {
 
     @Test
     public void signupInvoke() throws InterruptedException {
-        driver.get("http://192.168.1.193:3001/en/login");
+        driver.get("http://192.168.1.193:3001/en/sign-up");
         FunctionsImplementation instance = new FunctionsImplementation(driver);
         instance.initialize(driver);
-        /*instance.validationFields();
+        instance.validationFields();
         instance.signUp();
         instance.otpSend();
-        Thread.sleep(2000);*/
+        Thread.sleep(2000);
         instance.login();
+        instance.passwordRecovery();
 
     }
 
