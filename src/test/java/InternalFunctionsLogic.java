@@ -1,7 +1,4 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -9,20 +6,31 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import java.security.Key;
 import java.time.Duration;
 import java.util.Random;
 
 public class InternalFunctionsLogic {
     WebDriver driver;
+    WebDriverWait wait;
     SoftAssert softassertion = new SoftAssert();
+
+
     public InternalFunctionsLogic(WebDriver driver){
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10)); // ✅ safe here
+
     }
 
     public void initialize(WebDriver driver){
         PageFactory.initElements(driver, this);
     }
 
+
+
+    public WebElement waitDriver(By locator){
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
     public void clearFields(WebElement elem1, WebElement elem2){
         elem1.sendKeys(Keys.CONTROL + "a");
         elem1.sendKeys(Keys.BACK_SPACE);
@@ -322,4 +330,133 @@ public class InternalFunctionsLogic {
         validloginUser(validEmail,strongPassword);
 
     }
+    @FindBy(xpath = "//*[@id=\"heroSearch\"]/div/div/div[1]/div/div/button")
+    WebElement section;
+
+    @FindBy(xpath = "//*[@id=\"heroSearch\"]/div/div/div[2]/div/div/button")
+    WebElement category;
+
+    @FindBy(xpath = "/html/body/main/div[1]/div[2]/div[2]/div/div/div[3]/div/div/div/div/input")
+    WebElement location;
+
+    @FindBy(xpath = "//*[@id=\"heroSearch\"]/div/div/div[4]/div/div/button")
+    WebElement propType;
+
+    @FindBy(xpath = "//*[@id=\"heroSearch\"]/div/div/div[5]/button")
+    WebElement arrowSearch;
+
+    public void landingpageSearch(){
+        System.out.print("\nLanding Page 2 Invoked!");
+        driver.findElement(By.xpath("//*[@id=\"driver-popover-content\"]/button")).click();
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        js.executeScript("window.scrollBy(0,200)");
+
+        //Assertion for the Landing Page
+        Assert.assertEquals(waitDriver(By.xpath("/html/body/main/div[3]/div[1]/div[1]")).getText(), "Sections");
+        section.click();
+        waitDriver(By.xpath("//*[@id=\"simple-popper\"]/div[3]/div/div/div[1]")).click();
+        category.click();
+        waitDriver(By.xpath("//*[@id=\"simple-popper\"]/div[3]/div/div/div[1]")).click();
+        location.click();
+        location.sendKeys("Abu Dhabi");
+        propType.click();
+        waitDriver(By.xpath("//*[@id=\"simple-popper\"]/div[3]/div/div[2]/p[3]")).click();
+        waitDriver(By.xpath("//*[@id=\"simple-popper\"]/div[3]/div/div[3]/button[2]")).click();
+        arrowSearch.click();
+
+    }
+        @FindBy(xpath = "/html/body/div[4]/div/div/div[2]/div[1]/div/p[1]")
+        WebElement footerAssert;
+
+        @FindBy(linkText = "Contact Us")
+        WebElement contact;
+
+        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[1]/div/div/input")
+        WebElement fullName;
+
+        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[2]/div/div/input")
+        WebElement contactEmail;
+
+        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[3]/div/div/div/input")
+        WebElement phoneContact;
+
+        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[4]/div/div/textarea[1]")
+        WebElement message;
+
+        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[5]/div[1]/label[1]/span[1]/input")
+        WebElement phoneCheckbox;
+
+        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[5]/div[2]/label/span/input")
+        WebElement privacyPolicy;
+
+        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[6]/button")
+        WebElement submitContact;
+
+        public void contact() throws InterruptedException {
+            driver.findElement(By.xpath("//*[@id=\"driver-popover-content\"]/button")).click();
+            Thread.sleep(2000);
+            JavascriptExecutor js = (JavascriptExecutor)driver;
+            js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
+            Thread.sleep(2000);
+            //Assertion for Footer
+            Assert.assertTrue(footerAssert.isDisplayed());
+            contact.click();
+
+            //Switching between the tabs
+            for(int z = 1;z<5;z++) {
+                String xpath = "//*[@id=\"contact\"]/div[1]/div/div/div/div/button[" + z + "]";
+                waitDriver(By.xpath(xpath)).click();
+                Thread.sleep(1500);
+            }
+        }
+
+        public void contactFieldsValidation() throws InterruptedException {
+            //Filling the Contact Form Fields
+            System.out.println("Validating the Contact Fields ...");
+
+            Thread.sleep(1500);
+            //Scrolling Down to Make "Submit" Visible
+            JavascriptExecutor js = (JavascriptExecutor)driver;
+            js.executeScript("window.scrollBy(0,300)");
+            Thread.sleep(1500);
+            submitContact.click();
+            fullName.sendKeys("Umar");
+            contactEmail.sendKeys("yes");
+            phoneContact.sendKeys("5088786511");
+            clearsingleField(message);
+            message.sendKeys("To Contact");
+            phoneCheckbox.click();
+            System.out.println("Phone clicked!");
+            privacyPolicy.click();
+            System.out.println("Privacy policy clicked!");
+
+            submitContact.click();
+            System.out.println("Submit button clicked!");
+
+        }
+
+            public void contactSubmit() throws InterruptedException {
+            for(int i=0;i<3;i++){
+                System.out.println("Correct Submit of Contact and Contacting with the same user at " +i + " time");
+
+                Thread.sleep(1500);
+                clearFields(fullName,contactEmail);
+                clearFields(phoneContact,message);
+
+                submitContact.click();
+                fullName.sendKeys("Umar");
+                contactEmail.sendKeys("umarhassanzia88+test19@gmail.com");
+                phoneContact.sendKeys("508878651");
+                clearsingleField(message);
+                message.sendKeys("To Contact");
+                phoneCheckbox.click();
+                privacyPolicy.click();
+                submitContact.click();
+                //Pause before filling the same fields again for contact
+                Thread.sleep(2000);
+            }}
+
+
+
+
 }

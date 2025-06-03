@@ -5,9 +5,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import java.time.Duration;
 import java.util.Random;
 import java.util.UUID;
 
@@ -15,6 +17,7 @@ public class FunctionsImplementation extends InternalFunctionsLogic{
 
     public FunctionsImplementation(WebDriver driver) {
         super(driver);
+
     }
     Random rand = new Random();
     int randomNum = rand.nextInt(200) + 10;
@@ -56,6 +59,16 @@ public class FunctionsImplementation extends InternalFunctionsLogic{
 
     public void passwordRecovery() throws InterruptedException {
         forgotPass();
+    }
 
+    public void landingPageSearch(){
+        System.out.print("Landing Page 1 Invoked!");
+        landingpageSearch();
+    }
+    public void contactUs() throws InterruptedException {
+        System.out.println("Redirected to the Contact Us Page...");
+        contact();
+        contactFieldsValidation();
+        contactSubmit();
     }
 }
