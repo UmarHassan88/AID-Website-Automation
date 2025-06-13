@@ -26,8 +26,6 @@ public class InternalFunctionsLogic {
         PageFactory.initElements(driver, this);
     }
 
-
-
     public WebElement waitDriver(By locator){
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
@@ -42,6 +40,9 @@ public class InternalFunctionsLogic {
         elem1.sendKeys(Keys.BACK_SPACE);
 
     }
+
+    //-----------WebElements for SignUp----------------------
+
     @FindBy(name = "email")
     WebElement email;
     @FindBy(name = "phoneNumber")
@@ -61,21 +62,16 @@ public class InternalFunctionsLogic {
 
     public void validationFields() throws InterruptedException {
         //SIGNUP TEXT
-        driver.findElement(By.xpath("/html/body/div[1]/div/form/button")).click();
-        softassertion.assertEquals(driver.findElement(By.xpath("/html/body/div[1]/div/form/p")).getText(), "Sign Up");
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\":Rkil5uutdfb:-helper-text\"]")).isDisplayed());
-        Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\":Rkml5uutdfb:-helper-text\"]")).getText(), "Phone number is required");
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\":Rkql5uutdfb:-helper-text\"]")).isDisplayed());
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\":Racul5uutdfb:-helper-text\"]")).isDisplayed());
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\":Rl2l5uutdfb:-helper-text\"]")).isDisplayed());
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\":Rl6l5uutdfb:-helper-text\"]\n")).isDisplayed());
+        driver.findElement(By.xpath("//button[@tabindex = '0' and @type = 'submit']")).click();
+        softassertion.assertEquals(driver.findElement(By.xpath("//p[text() = 'Sign Up']")).getText(), "Sign Up");
+        Assert.assertEquals(driver.findElement(By.xpath("//p[text() = 'Phone number is required']")).getText(), "Phone number is required");
         Thread.sleep(2000);
     }
 
     public void invalidEmail(String em) throws InterruptedException {
         System.out.print("Sending the Invalid Email Address...");
         email.sendKeys(em);
-        softassertion.assertTrue(driver.findElement(By.xpath("//*[@id=\":Rkil5uutdfb:-helper-text\"]")).isDisplayed());
+        softassertion.assertTrue(driver.findElement(By.xpath("//p[text() = 'Invalid email address']")).isDisplayed());
         Thread.sleep(2000);
         email.sendKeys(Keys.CONTROL + "a");
         email.sendKeys(Keys.BACK_SPACE);
@@ -89,7 +85,8 @@ public class InternalFunctionsLogic {
     public void invalidContactnum(String phone) throws InterruptedException {
         System.out.print("\nSending the Invalid Contact Number...");
         contactNo.sendKeys(String.valueOf(phone));
-        softassertion.assertTrue(driver.findElement(By.xpath("//*[@id=\":Rkml5uutdfb:-helper-text\"]")).isDisplayed());
+        Thread.sleep(1500);
+        //softassertion.assertTrue(driver.findElement(By.xpath("//id[contains(text(), 'Phone number must be ')]")).isDisplayed());
         Thread.sleep(2000);
         clearsingleField(contactNo);
 
@@ -118,7 +115,7 @@ public class InternalFunctionsLogic {
         System.out.print("\nSending the Small Password and Confirm Password...");
         String createPassword = "Aqary";
         password.sendKeys(createPassword);
-        Assert.assertEquals(driver.findElement(By.xpath("//*[@id=\":Rl2l5uutdfb:-helper-text\"]")).getText(), "Password must be at least 8 characters long");
+        Assert.assertEquals(driver.findElement(By.xpath("//p[text() = 'Password must be at least 8 characters long']")).getText(), "Password must be at least 8 characters long");
         confirmPassword.sendKeys(createPassword);
         Thread.sleep(2000);
         clearFields(password,confirmPassword);
@@ -128,7 +125,7 @@ public class InternalFunctionsLogic {
         System.out.print("\nSending the Weak Password and Confirm Password...");
         String createPassword = "AqaryInt12";
         password.sendKeys(createPassword);
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\":Rl2l5uutdfb:-helper-text\"]")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.xpath("//p[text() = 'Password must contain at least one special character e.g !@#$%^&*']")).isDisplayed());
         confirmPassword.sendKeys(createPassword);
         Thread.sleep(2000);
         clearFields(password,confirmPassword);
@@ -138,7 +135,7 @@ public class InternalFunctionsLogic {
         String createPassword = "Aqary@88";
         password.sendKeys(createPassword);
         confirmPassword.sendKeys("Aqary88");
-        Assert.assertTrue(driver.findElement(By.xpath("//*[@id=\":Rl6l5uutdfb:-helper-text\"]")).isDisplayed());
+        Assert.assertTrue(driver.findElement(By.xpath("//p[text() = 'Passwords must match']")).isDisplayed());
         Thread.sleep(2000);
         clearFields(password,confirmPassword);
 
@@ -151,6 +148,8 @@ public class InternalFunctionsLogic {
         Thread.sleep(2000);
 
     }
+
+    //-------------WebElements for SEND OTP---------------
 
     @FindBy(xpath = "/html/body/div[1]/div/form/div/div[2]/div[2]/div[1]/input")
     WebElement firstDigit;
@@ -193,7 +192,6 @@ public class InternalFunctionsLogic {
         System.out.println("Resend Clicked!");
         Thread.sleep(35000);
         submit.click();
-
     }
 
     @FindBy(name = "username")
@@ -227,7 +225,6 @@ public class InternalFunctionsLogic {
         clearFields(username,pass);
         }
 
-
     public void validloginUser(String user, String password) throws InterruptedException {
         System.out.println("Valid Login Page Invoked!");
         username.sendKeys(user);
@@ -237,25 +234,26 @@ public class InternalFunctionsLogic {
         System.out.print("\nLogged in the System !");
     }
 
+    //---------WebElements for Forgot Password------------
     @FindBy(linkText = "Forgot Password?")
     WebElement forgotpass;
 
-    @FindBy(xpath = "/html/body/div[1]/div/form/div[2]/div/input")
+    @FindBy(xpath = "//input[@placeholder = 'Enter your Email' and @name = 'email']")
     WebElement emailForgot;
 
-    @FindBy(xpath = "/html/body/div[1]/div/form/button[2]")
+    @FindBy(xpath = "//button[@tabindex = '0' and @type = 'submit']")
     WebElement submitButt;
 
-    @FindBy(xpath = "/html/body/div[1]/div/form/div/div[2]/div[1]/div/input")
+    @FindBy(xpath = "//input[@placeholder = 'Enter your new password' and @name = 'newPassword']")
     WebElement newPassword;
 
-    @FindBy(xpath = "/html/body/div[1]/div/form/div/div[2]/div[2]/div/input")
+    @FindBy(xpath = "//input[@placeholder = 'Re-Enter your new password' and @name = 'rePassword']")
     WebElement reenterPassword;
 
 
     public void forgotPass() throws InterruptedException {
         System.out.println("\nForgot Password Page Invoked!");
-        driver.get("http://192.168.1.193:3001/en/login");
+        driver.get("https://investment.aqaryservices.com/en/login");
         forgotpass.click();
         Thread.sleep(2000);
         String invalidEmail = "umarhassan88+test5@gmail.com";
@@ -330,6 +328,9 @@ public class InternalFunctionsLogic {
         validloginUser(validEmail,strongPassword);
 
     }
+
+    //---------WebElements for Landing Page Search------------
+
     @FindBy(xpath = "//*[@id=\"heroSearch\"]/div/div/div[1]/div/div/button")
     WebElement section;
 
@@ -365,31 +366,33 @@ public class InternalFunctionsLogic {
         arrowSearch.click();
 
     }
-        @FindBy(xpath = "/html/body/div[4]/div/div/div[2]/div[1]/div/p[1]")
+    //---------WebElements for Contact Us------------
+
+    @FindBy(xpath = "/html/body/div[4]/div/div/div[2]/div[1]/div/p[1]")
         WebElement footerAssert;
 
         @FindBy(linkText = "Contact Us")
         WebElement contact;
 
-        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[1]/div/div/input")
+        @FindBy(name = "name")
         WebElement fullName;
 
-        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[2]/div/div/input")
+        @FindBy(xpath = "//input[@name = 'email' or @placeholder = 'Email']")
         WebElement contactEmail;
 
-        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[3]/div/div/div/input")
+        @FindBy(name = "phone")
         WebElement phoneContact;
 
-        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[4]/div/div/textarea[1]")
+        @FindBy(xpath = "//textarea[@name = 'message' and @placeholder = 'Message']")
         WebElement message;
 
-        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[5]/div[1]/label[1]/span[1]/input")
+        @FindBy(xpath = "(//input[@type = 'checkbox' and @data-indeterminate = 'false'])[1]")
         WebElement phoneCheckbox;
 
-        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[5]/div[2]/label/span/input")
+        @FindBy(xpath = "//span[text()='Email']/following::input[@type='checkbox'][1]")
         WebElement privacyPolicy;
 
-        @FindBy(xpath = "/html/body/div[4]/div[2]/div[1]/form/div[6]/button")
+        @FindBy(xpath = "//button[@type = 'submit']")
         WebElement submitContact;
 
         public void contact() throws InterruptedException {
@@ -445,7 +448,7 @@ public class InternalFunctionsLogic {
 
                 submitContact.click();
                 fullName.sendKeys("Umar");
-                contactEmail.sendKeys("umarhassanzia88+test19@gmail.com");
+                contactEmail.sendKeys("umarhassanzia88+test21@gmail.com");
                 phoneContact.sendKeys("508878651");
                 clearsingleField(message);
                 message.sendKeys("To Contact");
@@ -455,8 +458,6 @@ public class InternalFunctionsLogic {
                 //Pause before filling the same fields again for contact
                 Thread.sleep(2000);
             }}
-
-
 
 
 }

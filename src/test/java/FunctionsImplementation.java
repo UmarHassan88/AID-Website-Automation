@@ -61,7 +61,7 @@ public class FunctionsImplementation extends InternalFunctionsLogic{
         forgotPass();
     }
 
-    public void landingPageSearch(){
+    public void landingPageSearch() throws InterruptedException {
         System.out.print("Landing Page 1 Invoked!");
         landingpageSearch();
     }

@@ -13,7 +13,7 @@ public class TestScriptsExecution {
 
     @Test
     public void signupInvoke() throws InterruptedException {
-        driver.get("http://192.168.1.193:3001/en/sign-up");
+        driver.get("https://investment.aqaryservices.com/en/sign-up");
         instance.initialize(driver);
         instance.validationFields();
         instance.signUp();
@@ -24,18 +24,17 @@ public class TestScriptsExecution {
 
     }
 @Test
-    public void landingpageSearchfeature(){
+    public void landingpageSearchfeature() throws InterruptedException {
 
-        driver.get("http://192.168.1.193:3001/en");
+        driver.get("https://investment.aqaryservices.com/en");
         instance.initialize(driver);
         instance.landingPageSearch();
     }
 @Test
     public void contactUs() throws InterruptedException {
-        driver.get("http://192.168.1.193:3001/en");
+        driver.get("https://investment.aqaryservices.com/en");
         instance.initialize(driver);
         instance.contactUs();
 
     }
-
 }
