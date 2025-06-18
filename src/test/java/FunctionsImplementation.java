@@ -46,7 +46,6 @@ public class FunctionsImplementation extends InternalFunctionsLogic{
     public void otpSend() throws InterruptedException {
     IncorrectOTP();
     ResendOTP();
-
     }
 
     public void login() throws InterruptedException {

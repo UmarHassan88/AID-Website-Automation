@@ -9,6 +9,7 @@ import org.testng.asserts.SoftAssert;
 import java.security.Key;
 import java.time.Duration;
 import java.util.Random;
+import java.util.Set;
 
 public class InternalFunctionsLogic {
     WebDriver driver;
@@ -27,8 +28,19 @@ public class InternalFunctionsLogic {
     }
 
     public WebElement waitDriver(By locator){
+
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
     }
+
+    public void popperClose(){
+        driver.findElement(By.xpath("//*[@id=\"driver-popover-content\"]/button")).click();
+
+    }
+    public void Scroll(){
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        js.executeScript("window.scrollBy(0,700)");
+    }
+
     public void clearFields(WebElement elem1, WebElement elem2){
         elem1.sendKeys(Keys.CONTROL + "a");
         elem1.sendKeys(Keys.BACK_SPACE);
@@ -438,7 +450,7 @@ public class InternalFunctionsLogic {
 
         }
 
-            public void contactSubmit() throws InterruptedException {
+        public void contactSubmit() throws InterruptedException {
             for(int i=0;i<3;i++){
                 System.out.println("Correct Submit of Contact and Contacting with the same user at " +i + " time");
 
@@ -460,4 +472,91 @@ public class InternalFunctionsLogic {
             }}
 
 
+        @FindBy(xpath = "//a[@href = '/listing/sale/property']")
+        WebElement propertySection;
+
+        @FindBy(xpath = "//button[@aria-label = 'Save' and @type = 'button']")
+        WebElement saveOption;
+
+        @FindBy(xpath = "//input[@type = 'text' and @name = 'username']")
+        WebElement emailuser;
+
+        @FindBy(xpath = "//input[@type = 'password' and @name = 'password']")
+        WebElement passworduser;
+
+        @FindBy(xpath = "//button[@type = 'submit' and text() = 'Login']")
+        WebElement submitBut;
+
+        public void saveListing() throws InterruptedException {
+            popperClose();
+            Scroll();
+            Thread.sleep(1500);
+            Assert.assertTrue(propertySection.isDisplayed());
+            propertySection.click();
+            Thread.sleep(1500);
+            Scroll();
+            Assert.assertTrue(driver.findElement(By.xpath("//span[text() = 'Property for Sale']")).isDisplayed());
+            Thread.sleep(1500);
+            saveOption.click();
+            WebElement visibleLogin = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//label[text() = 'Email/Username']")));
+            Assert.assertEquals(visibleLogin.getText(),"Email/Username");
+            Thread.sleep(1000);
+            //Filling the Login Fields
+            emailuser.sendKeys("umarhassanzia88+test5@gmail.com");
+            passworduser.sendKeys("Aqary@88");
+            submitBut.click();
+            saveOption.click();
+
+        }
+
+        @FindBy(xpath = "//p[text() = 'Saved Listing']")
+        WebElement savedListing;
+
+        public void verifysavedListing() throws InterruptedException {
+            Thread.sleep(1500);
+            JavascriptExecutor js = (JavascriptExecutor)driver;
+            js.executeScript("window.scrollTo(0,0)");
+            Thread.sleep(2500);
+            savedListing.click();
+            Thread.sleep(1500);
+            Assert.assertTrue(driver.findElement(By.xpath("//button[@type = 'button' and text() = 'Contact']")).isDisplayed());
+        }
+
+        public void unsaveListing() throws InterruptedException {
+            saveOption.click();
+            driver.navigate().back();
+            Thread.sleep(1500);
+            Scroll();
+        }
+
+        //About Section
+        @FindBy(linkText = "About Us")
+        WebElement about;
+
+        @FindBy(linkText = "Download Brochure")
+        WebElement brochure;
+
+        public void about() throws InterruptedException {
+            popperClose();
+            about.click();
+            Thread.sleep(1000);
+            String currentWindow = driver.getWindowHandle();
+            System.out.println("About Us Window Handle -> "+currentWindow);
+            Set<String> allwindowHandles = driver.getWindowHandles();
+            JavascriptExecutor js = (JavascriptExecutor)driver;
+            js.executeScript("window.scrollBy(0, 1500);");
+            Thread.sleep(1000);
+            Assert.assertEquals(driver.findElement(By.xpath("//p[text() = 'Ashraf Erian']")).getText(), "Ashraf Erian");
+            Thread.sleep(1000);
+            Assert.assertTrue(brochure.isDisplayed());
+            brochure.click();
+            for(String windowhandle:allwindowHandles){
+                if(!windowhandle.equals(currentWindow)){
+                    driver.switchTo().window(windowhandle);
+                    break;
+                }
+            }
+
+
+        }
 }

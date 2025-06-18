@@ -11,6 +11,10 @@ public class TestScriptsExecution {
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     FunctionsImplementation instance = new FunctionsImplementation(driver);
 
+    public void navigateHome(){
+        driver.get("https://investment.aqaryservices.com/en");
+
+    }
     @Test
     public void signupInvoke() throws InterruptedException {
         driver.get("https://investment.aqaryservices.com/en/sign-up");
@@ -26,15 +30,31 @@ public class TestScriptsExecution {
 @Test
     public void landingpageSearchfeature() throws InterruptedException {
 
-        driver.get("https://investment.aqaryservices.com/en");
+        navigateHome();
         instance.initialize(driver);
         instance.landingPageSearch();
     }
 @Test
     public void contactUs() throws InterruptedException {
-        driver.get("https://investment.aqaryservices.com/en");
+        navigateHome();
         instance.initialize(driver);
         instance.contactUs();
+
+    }
+    @Test
+    public void SaveListing() throws InterruptedException {
+        navigateHome();
+        instance.initialize(driver);
+        instance.saveListing();
+        instance.verifysavedListing();
+        instance.unsaveListing();
+    }
+
+    @Test
+    public void aboutUs() throws InterruptedException {
+        navigateHome();
+        instance.initialize(driver);
+        instance.about();
 
     }
 }
